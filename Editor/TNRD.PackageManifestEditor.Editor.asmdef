@@ -1,0 +1,16 @@
+{
+    "name": "TNRD.PackageManifestEditor.Editor",
+    "references": [
+        "TNRD.PackageManifestEditor.SimpleJSON",
+        "Artees.SemanticVersioning"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
