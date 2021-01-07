@@ -21,9 +21,9 @@ Package Manifest Editor is a utility to edit package manifests through code.
 ```
 openupm add net.tnrd.packagemanifesteditor
 ```
-2. Installing through a [Unity Package](http://package-installer.glitch.me/v1/installer/package.openupm.com/net.tnrd.packageManifesteditor?registry=https://package.openupm.com) created by the [Package Installer Creator](https://package-installer.glitch.me) from [Needle](https://needle.tools)
+2. Installing through a [Unity Package](http://package-installer.glitch.me/v1/installer/package.openupm.com/net.tnrd.packagemanifesteditor?registry=https://package.openupm.com) created by the [Package Installer Creator](https://package-installer.glitch.me) from [Needle](https://needle.tools)
 
-[<img src="https://img.shields.io/badge/-Download-success?style=for-the-badge"/>](http://package-installer.glitch.me/v1/installer/package.openupm.com/net.tnrd.packageManifesteditor?registry=https://package.openupm.com)
+[<img src="https://img.shields.io/badge/-Download-success?style=for-the-badge"/>](http://package-installer.glitch.me/v1/installer/package.openupm.com/net.tnrd.packagemanifesteditor?registry=https://package.openupm.com)
 
 ## Usage
 
