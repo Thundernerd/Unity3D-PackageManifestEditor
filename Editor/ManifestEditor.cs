@@ -193,7 +193,6 @@ namespace TNRD.PackageManifestEditor
         public void Save()
         {
             string json = root.ToString(2);
-            Debug.Log(json);
             File.WriteAllText(path, json);
         }
 
