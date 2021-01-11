@@ -30,6 +30,16 @@ namespace TNRD.PackageManifestEditor
         }
 
         /// <summary>
+        /// The package version number (MAJOR.MINOR.PATCH).
+        /// </summary>
+        [PublicAPI]
+        public SemVer Version
+        {
+            get => root["version"].Value;
+            set => root["version"].Value = value;
+        }
+
+        /// <summary>
         /// A user-friendly name to appear in the Unity Editor (for example, in the Project Browser, the Package Manager window, etc.).
         /// </summary>
         [PublicAPI]
