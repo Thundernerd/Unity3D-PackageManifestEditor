@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Artees.UnitySemVer;
 using JetBrains.Annotations;
 using SimpleJSON;
-using UnityEngine;
 
 namespace TNRD.PackageManifestEditor
 {
@@ -63,6 +64,7 @@ namespace TNRD.PackageManifestEditor
         /// Part of a Unity version
         /// Format: <MAJOR>.<MINOR>
         /// </summary>
+        [PublicAPI]
         public string UnityVersion
         {
             get => root["unity"].Value;
@@ -87,6 +89,27 @@ namespace TNRD.PackageManifestEditor
                 {
                     root["unityRelease"].Value = value;
                 }
+            }
+        }
+
+        [PublicAPI]
+        public Sample[] Samples
+        {
+            get
+            {
+                if (!root.HasKey("samples"))
+                    return new Sample[0];
+
+                List<Sample> samples = new List<Sample>();
+
+                JSONArray samplesArray = root["samples"].AsArray;
+                foreach (KeyValuePair<string, JSONNode> kvp in samplesArray)
+                {
+                    Sample sample = new Sample((JSONObject) kvp.Value);
+                    samples.Add(sample);
+                }
+
+                return samples.ToArray();
             }
         }
 
@@ -147,6 +170,81 @@ namespace TNRD.PackageManifestEditor
         }
 
         /// <summary>
+        /// Adds a sample to the manifest
+        /// </summary>
+        /// <param name="displayName">The name that should be displayed for this sample</param>
+        /// <param name="path">The path of the sample relative to the package's root folder</param>
+        /// <param name="description">Optional description for the sample</param>
+        [PublicAPI]
+        public void AddSample([NotNull] string displayName, [NotNull] string path, [CanBeNull] string description = "")
+        {
+            if (!root.HasKey("samples"))
+            {
+                root.Add("samples", new JSONArray());
+            }
+
+            Sample sample = new Sample(new JSONObject())
+            {
+                DisplayName = displayName,
+                Path = path,
+                Description = description
+            };
+
+            JSONArray samples = root["samples"].AsArray;
+            samples.Add(sample.Root);
+        }
+
+        /// <summary>
+        /// Tries to remove a sample. Can be done with either or all parameters
+        /// </summary>
+        /// <param name="displayName">The displayName to search for</param>
+        /// <param name="path">The path to search for</param>
+        /// <returns>True if it removed a sample, false if it didn't</returns>
+        [PublicAPI]
+        public bool RemoveSample([CanBeNull]string displayName, [CanBeNull]string path)
+        {
+            if (!root.HasKey("samples"))
+            {
+                return false;
+            }
+
+            bool hasDisplayName = !string.IsNullOrEmpty(displayName);
+            bool hasPath = !string.IsNullOrEmpty(path);
+
+            if (!hasDisplayName && !hasPath)
+            {
+                return false;
+            }
+
+            Sample[] samples = Samples;
+            Sample sample;
+
+            if (hasDisplayName && hasPath)
+            {
+                sample = samples.FirstOrDefault(x => x.DisplayName == displayName && x.Path == path);
+            }
+            else if (hasDisplayName)
+            {
+                sample = samples.FirstOrDefault(x => x.DisplayName == displayName);
+            }
+            else
+            {
+                sample = samples.FirstOrDefault(x => x.Path == path);
+            }
+
+            if (sample == null)
+            {
+                return false;
+            }
+
+            int index = Array.IndexOf(samples, sample);
+            JSONArray samplesArray = root["samples"].AsArray;
+            samplesArray.Remove(index);
+
+            return true;
+        }
+
+        /// <summary>
         /// Adds a dependency to the manifest
         /// Updates the version if it already exists
         /// </summary>
@@ -161,15 +259,7 @@ namespace TNRD.PackageManifestEditor
             }
 
             JSONObject dependencies = root["dependencies"].AsObject;
-
-            if (dependencies.HasKey("id"))
-            {
-                dependencies[id].Value = version;
-            }
-            else
-            {
-                dependencies.Add(id, new JSONString(version));
-            }
+            dependencies.Add(id, new JSONString(version));
         }
 
         /// <summary>
@@ -210,7 +300,9 @@ namespace TNRD.PackageManifestEditor
         /// Opens a manifest file for editing
         /// </summary>
         /// <param name="id">The name of the folder the package is located in</param>
-        /// <returns><see cref="ManifestEditor"/></returns>
+        /// <returns>
+        ///     <see cref="ManifestEditor" />
+        /// </returns>
         /// <exception cref="PackageNotFoundException">Thrown when the package cannot be found</exception>
         [PublicAPI]
         public static ManifestEditor Open(string id)
