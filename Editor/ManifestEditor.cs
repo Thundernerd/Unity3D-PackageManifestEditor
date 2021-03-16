@@ -200,6 +200,7 @@ namespace TNRD.PackageManifestEditor
             }
 
             samples.Add(sample.Root);
+            root["samples"] = samples;
         }
 
         /// <summary>
@@ -224,20 +225,20 @@ namespace TNRD.PackageManifestEditor
                 return false;
             }
 
-            Sample[] samples = Samples;
+            Sample[] existingSamples = Samples;
             Sample sample;
 
             if (hasDisplayName && hasPath)
             {
-                sample = samples.FirstOrDefault(x => x.DisplayName == displayName && x.Path == path);
+                sample = existingSamples.FirstOrDefault(x => x.DisplayName == displayName && x.Path == path);
             }
             else if (hasDisplayName)
             {
-                sample = samples.FirstOrDefault(x => x.DisplayName == displayName);
+                sample = existingSamples.FirstOrDefault(x => x.DisplayName == displayName);
             }
             else
             {
-                sample = samples.FirstOrDefault(x => x.Path == path);
+                sample = existingSamples.FirstOrDefault(x => x.Path == path);
             }
 
             if (sample == null)
@@ -245,9 +246,10 @@ namespace TNRD.PackageManifestEditor
                 return false;
             }
 
-            int index = Array.IndexOf(samples, sample);
-            JSONArray samplesArray = root["samples"].AsArray;
-            samplesArray.Remove(index);
+            int index = Array.IndexOf(existingSamples, sample);
+            JSONArray samples = root["samples"].AsArray;
+            samples.Remove(index);
+            root["samples"] = samples;
 
             return true;
         }
