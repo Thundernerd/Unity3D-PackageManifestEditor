@@ -100,9 +100,11 @@ namespace TNRD.PackageManifestEditor
                 if (!root.HasKey("samples"))
                     return new Sample[0];
 
-                List<Sample> samples = new List<Sample>();
-
                 JSONArray samplesArray = root["samples"].AsArray;
+                if (samplesArray == null)
+                    return new Sample[0];
+
+                List<Sample> samples = new List<Sample>();
                 foreach (KeyValuePair<string, JSONNode> kvp in samplesArray)
                 {
                     Sample sample = new Sample((JSONObject) kvp.Value);
@@ -201,7 +203,7 @@ namespace TNRD.PackageManifestEditor
         /// <param name="path">The path to search for</param>
         /// <returns>True if it removed a sample, false if it didn't</returns>
         [PublicAPI]
-        public bool RemoveSample([CanBeNull]string displayName, [CanBeNull]string path)
+        public bool RemoveSample([CanBeNull] string displayName, [CanBeNull] string path)
         {
             if (!root.HasKey("samples"))
             {
