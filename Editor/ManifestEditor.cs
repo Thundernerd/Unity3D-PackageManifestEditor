@@ -193,6 +193,12 @@ namespace TNRD.PackageManifestEditor
             };
 
             JSONArray samples = root["samples"].AsArray;
+
+            if (samples == null)
+            {
+                samples = new JSONArray();
+            }
+
             samples.Add(sample.Root);
         }
 
