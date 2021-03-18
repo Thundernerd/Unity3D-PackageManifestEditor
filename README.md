@@ -31,11 +31,11 @@ Before you can do anything you'll have to open a manifest for editing like so
 ```c#
 private void Foo()
 {
-    ManifestEditor editor = ManifestEditor.Open("Package Folder Name");
+    ManifestEditor editor = ManifestEditor.OpenById("Package Folder Name");
 }
 ```
 I personally put my packages in folders with the reverse domain name notation so I would use something along the lines of 
-```ManifestEditor.Open("tld.domain.packagename");```
+```ManifestEditor.OpenById("tld.domain.packagename");```
 
 ### Supported attributes
 This package follows Unity's manifest definition which can be found here: [https://docs.unity3d.com/Manual/upm-manifestPkg.html](https://docs.unity3d.com/Manual/upm-manifestPkg.html)
@@ -46,7 +46,7 @@ To add a dependency one can use the `AddDependency` method like so
 ```c#
 private void Foo()
 {
-    ManifestEditor editor = ManifestEditor.Open("tld.domain.packagename");
+    ManifestEditor editor = ManifestEditor.OpenById("tld.domain.packagename");
     editor.AddDependency("tld.domain.packagedependency", "1.0.0");
 }
 ```
@@ -56,7 +56,7 @@ Removing a dependency is done using the `RemoveDependency` method like so
 ```c#
 private void Foo()
 {
-    ManifestEditor editor = ManifestEditor.Open("tld.domain.packagename");
+    ManifestEditor editor = ManifestEditor.OpenById("tld.domain.packagename");
     editor.RemoveDependency("tld.domain.packagedependency");
 }
 ```
@@ -66,7 +66,7 @@ Once you're done with your changes you can save the manifest file. It will overw
 ```c#
 private void Foo()
 {
-    ManifestEditor editor = ManifestEditor.Open("tld.domain.packagename");
+    ManifestEditor editor = ManifestEditor.OpenById("tld.domain.packagename");
     // Do some changes
     editor.Save();
 }
@@ -77,7 +77,7 @@ If you want to undo your changes you can simply reload the manifest from disk li
 ```c#
 private void Foo()
 {
-    ManifestEditor editor = ManifestEditor.Open("tld.domain.packagename");
+    ManifestEditor editor = ManifestEditor.OpenById("tld.domain.packagename");
     // Some changes applied that you want to undo
     editor.Reload();
 }
