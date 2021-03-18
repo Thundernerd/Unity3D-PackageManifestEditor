@@ -314,11 +314,38 @@ namespace TNRD.PackageManifestEditor
         ///     <see cref="ManifestEditor" />
         /// </returns>
         /// <exception cref="PackageNotFoundException">Thrown when the package cannot be found</exception>
-        [PublicAPI]
+        [PublicAPI, Obsolete("Use ManifestEditor.OpenById instead")]
         public static ManifestEditor Open(string id)
         {
-            string path = $"Packages/{id}/package.json";
+            return OpenById(id);
+        }
 
+        /// <summary>
+        /// Opens a manifest file for editing
+        /// </summary>
+        /// <param name="id">The name of the folder the package is located in</param>
+        /// <returns>
+        ///     <see cref="ManifestEditor" />
+        /// </returns>
+        /// <exception cref="PackageNotFoundException">Thrown when the package cannot be found</exception>
+        [PublicAPI]
+        public static ManifestEditor OpenById(string id)
+        {
+            string path = $"Packages/{id}/package.json";
+            return OpenByPath(path);
+        }
+
+        /// <summary>
+        /// Opens a manifest file for editing
+        /// </summary>
+        /// <param name="path">The name of the folder the package is located in</param>
+        /// <returns>
+        ///     <see cref="ManifestEditor" />
+        /// </returns>
+        /// <exception cref="PackageNotFoundException">Thrown when the package cannot be found</exception>
+        [PublicAPI]
+        public static ManifestEditor OpenByPath(string path)
+        {
             if (!File.Exists(path))
             {
                 throw new PackageNotFoundException("Package not found!", path);
