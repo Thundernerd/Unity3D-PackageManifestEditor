@@ -10,7 +10,7 @@ namespace TNRD.PackageManifestEditor
         [Test]
         public void CanOpenManifest()
         {
-            ManifestEditor manifestEditor = ManifestEditor.Open(PACKAGE_KEY);
+            ManifestEditor manifestEditor = ManifestEditor.OpenById(PACKAGE_KEY);
             Assert.IsNotNull(manifestEditor);
             // Use the Assert class to test conditions
         }
@@ -18,14 +18,14 @@ namespace TNRD.PackageManifestEditor
         [Test]
         public void CanReadName()
         {
-            ManifestEditor manifestEditor = ManifestEditor.Open(PACKAGE_KEY);
+            ManifestEditor manifestEditor = ManifestEditor.OpenById(PACKAGE_KEY);
             Assert.AreEqual(PACKAGE_KEY, manifestEditor.Name);
         }
 
         [Test]
         public void CanWriteName()
         {
-            ManifestEditor manifestEditor = ManifestEditor.Open(PACKAGE_KEY);
+            ManifestEditor manifestEditor = ManifestEditor.OpenById(PACKAGE_KEY);
             Assert.AreEqual(PACKAGE_KEY, manifestEditor.Name);
             manifestEditor.Name = "test";
             Assert.AreEqual("test", manifestEditor.Name);
@@ -34,7 +34,7 @@ namespace TNRD.PackageManifestEditor
         [Test]
         public void CanReload()
         {
-            ManifestEditor manifestEditor = ManifestEditor.Open(PACKAGE_KEY);
+            ManifestEditor manifestEditor = ManifestEditor.OpenById(PACKAGE_KEY);
             Assert.AreEqual(PACKAGE_KEY, manifestEditor.Name);
             manifestEditor.Name = "test";
             Assert.AreEqual("test", manifestEditor.Name);
@@ -46,7 +46,7 @@ namespace TNRD.PackageManifestEditor
         [Test]
         public void AddSample()
         {
-            ManifestEditor manifestEditor = ManifestEditor.Open(PACKAGE_KEY);
+            ManifestEditor manifestEditor = ManifestEditor.OpenById(PACKAGE_KEY);
             Assert.AreEqual(0, manifestEditor.Samples.Length);
             manifestEditor.AddSample("TestSample", "Samples~//TestSample", "TestSampleDescription");
             Assert.AreEqual(1, manifestEditor.Samples.Length);
@@ -62,7 +62,7 @@ namespace TNRD.PackageManifestEditor
                 Assert.AreEqual(1, manifestEditor.Samples.Length);
             }
 
-            ManifestEditor manifestEditor = ManifestEditor.Open(PACKAGE_KEY);
+            ManifestEditor manifestEditor = ManifestEditor.OpenById(PACKAGE_KEY);
 
             AddDummySample(manifestEditor);
             bool result = manifestEditor.RemoveSample("TestSample", null);
