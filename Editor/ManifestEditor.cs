@@ -21,7 +21,8 @@ namespace TNRD.PackageManifestEditor
         }
 
         /// <summary>
-        /// The officially registered package name. This name must conform to the Unity Package Manager naming convention, which uses reverse domain name notation.
+        /// The officially registered package name.
+        /// This name must conform to the Unity Package Manager naming convention, which uses reverse domain name notation.
         /// </summary>
         [PublicAPI]
         public string Name
@@ -41,7 +42,8 @@ namespace TNRD.PackageManifestEditor
         }
 
         /// <summary>
-        /// A user-friendly name to appear in the Unity Editor (for example, in the Project Browser, the Package Manager window, etc.).
+        /// A user-friendly name to appear in the Unity Editor
+        /// For example, in the Project Browser, the Package Manager window, etc.
         /// </summary>
         [PublicAPI]
         public string DisplayName
@@ -51,7 +53,8 @@ namespace TNRD.PackageManifestEditor
         }
 
         /// <summary>
-        /// A brief description of the package. This is the text that appears in the details view of the Package Manager window. Any UTF–8 character code is supported.
+        /// A brief description of the package. This is the text that appears in the details view of the Package Manager window.
+        /// Any UTF–8 character code is supported.
         /// </summary>
         [PublicAPI]
         public string Description
@@ -346,6 +349,19 @@ namespace TNRD.PackageManifestEditor
         [PublicAPI]
         public static ManifestEditor OpenByPath(string path)
         {
+            bool isDirectory = Directory.Exists(path) && !File.Exists(path);
+
+            if (isDirectory)
+            {
+                string combinedPath = Path.Combine(path, "package.json");
+                if (File.Exists(combinedPath))
+                {
+                    return new ManifestEditor(combinedPath);
+                }
+
+                throw new PackageNotFoundException("Given path is a directory", path);
+            }
+
             if (!File.Exists(path))
             {
                 throw new PackageNotFoundException("Package not found!", path);

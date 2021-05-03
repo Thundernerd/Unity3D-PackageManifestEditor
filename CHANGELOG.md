@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.1] - 2021-05-03
+### Added
+- Detection if OpenByPath is given a directory instead of a direct path
+
 ## [2.0.0] - 2021-03-18
 ### Added
 - Different methods of opening a ManifestEditor
